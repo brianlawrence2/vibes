@@ -6,7 +6,7 @@ echo "Setting up vibes repository..."
 # Install Python dependencies
 echo "Installing Python dependencies..."
 pip install uv
-uv pip install pytest pytest-cov black isort mypy
+# uv pip install pytest pytest-cov black isort mypy
 
 # Install Node.js dependencies if package.json exists
 if [ -f "package.json" ]; then
@@ -18,6 +18,17 @@ fi
 if [ ! -d ".venv" ]; then
     echo "Creating Python virtual environment..."
     uv venv
+fi
+
+# Activate virtual environment and install dependencies
+echo "Activating virtual environment and installing dependencies..."
+source .venv/bin/activate
+uv pip install pytest pytest-cov black isort mypy
+
+# Install script-specific requirements if available
+if [ -f "scripts/requirements.txt" ]; then
+    echo "Installing script requirements..."
+    uv pip install -r scripts/requirements.txt
 fi
 
 # Initialize git hooks
